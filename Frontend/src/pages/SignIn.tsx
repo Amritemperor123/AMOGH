@@ -30,6 +30,14 @@ const SignIn = () => {
   const [showMFA, setShowMFA] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
   const [mfaMethod, setMfaMethod] = useState("authenticator");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [showForgotPasswordOTP, setShowForgotPasswordOTP] = useState(false);
+  const [forgotPasswordOTP, setForgotPasswordOTP] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const gProvider = new GoogleAuthProvider();
   const gitProvider = new GithubAuthProvider();
@@ -114,8 +122,39 @@ const SignIn = () => {
     // Handle successful sign in
   };
 
+  const handleForgotPasswordSubmit = () => {
+    console.log("Sending OTP to:", forgotPasswordEmail);
+    setShowForgotPasswordOTP(true);
+  };
+
+  const handleForgotPasswordOTPVerify = () => {
+    console.log("OTP verified:", forgotPasswordOTP);
+    // Handle password reset
+    if (newPassword === confirmPassword) {
+      console.log("Password reset successful");
+      // Reset to initial state
+      setShowForgotPassword(false);
+      setShowForgotPasswordOTP(false);
+      setForgotPasswordEmail("");
+      setForgotPasswordOTP("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+  };
+
+  const resetToSignIn = () => {
+    setShowMFA(false);
+    setShowForgotPassword(false);
+    setShowForgotPasswordOTP(false);
+    setForgotPasswordEmail("");
+    setForgotPasswordOTP("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setMfaCode("");
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-300 to-purple-300 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-200 to-purple-200 flex items-center justify-center p-4 relative overflow-hidden">
       <div className="w-full max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left side - Sign in form */}
@@ -130,7 +169,7 @@ const SignIn = () => {
                     <button
                       key={type.id}
                       onClick={() => setUserType(type.id)}
-                      className={`bg-white p-4 rounded-xl border-2 transition-all duration-500 ${
+                      className={`p-4 rounded-xl border-2 transition-all duration-500 bg-white ${
                         userType === type.id
                           ? "border-blue-500 bg-blue-50 scale-105 shadow-lg"
                           : "border-gray-200 hover:border-gray-300 hover:scale-102 hover:shadow-md"
@@ -149,13 +188,18 @@ const SignIn = () => {
             {/* Sign In Form */}
             <Card className="backdrop-blur-xl bg-white/90 border-0 shadow-2xl animate-scale-in delay-300">
               <CardHeader className="text-center pb-6">
-                <CardTitle className="text-2xl font-bold text-gray-900">Sign In</CardTitle>
+                <CardTitle className="text-2xl font-bold text-gray-900">
+                  {showForgotPassword ? "Reset Password" : "Sign In"}
+                </CardTitle>
                 <CardDescription className="text-gray-600">
-                  Enter your credentials to access your account
+                  {showForgotPassword 
+                    ? "Enter your email to receive a verification code"
+                    : "Enter your credentials to access your account"
+                  }
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {!showMFA ? (
+                {!showMFA && !showForgotPassword ? (
                   <>
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
@@ -197,9 +241,12 @@ const SignIn = () => {
                           Remember me
                         </Label>
                       </div>
-                      <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-medium">
+                      <button 
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-medium"
+                      >
                         Forgot password?
-                      </Link>
+                      </button>
                     </div>
 
                     <Button 
@@ -210,6 +257,131 @@ const SignIn = () => {
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </>
+                ) : showForgotPassword ? (
+                  <div className="space-y-6 animate-fade-in">
+                    {!showForgotPasswordOTP ? (
+                      <>
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Mail className="w-8 h-8 text-white" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Reset Your Password</h3>
+                          <p className="text-sm text-gray-600">We'll send you a verification code</p>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="forgotEmail" className="text-gray-700 font-medium">Email Address</Label>
+                          <Input
+                            id="forgotEmail"
+                            type="email"
+                            placeholder="your.email@example.com"
+                            value={forgotPasswordEmail}
+                            onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                            className="transition-all duration-300 focus:scale-[1.02] focus:shadow-lg border-gray-200 focus:border-blue-500"
+                          />
+                        </div>
+
+                        <Button 
+                          onClick={handleForgotPasswordSubmit}
+                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-500 hover:scale-105 group shadow-lg"
+                          disabled={!forgotPasswordEmail}
+                        >
+                          Send Verification Code
+                          <Mail className="ml-2 w-4 h-4 group-hover:scale-110 transition-transform" />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Shield className="w-8 h-8 text-white" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Enter Verification Code</h3>
+                          <p className="text-sm text-gray-600">Code sent to {forgotPasswordEmail}</p>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label className="text-gray-700 font-medium">Verification Code</Label>
+                          <InputOTP
+                            maxLength={6}
+                            value={forgotPasswordOTP}
+                            onChange={(value) => setForgotPasswordOTP(value)}
+                            className="justify-center"
+                          >
+                            <InputOTPGroup>
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                              <InputOTPSlot index={3} />
+                              <InputOTPSlot index={4} />
+                              <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                          </InputOTP>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="newPassword" className="text-gray-700 font-medium">New Password</Label>
+                            <div className="relative">
+                              <Input
+                                id="newPassword"
+                                type={showNewPassword ? "text" : "password"}
+                                placeholder="••••••••"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                className="pr-12 transition-all duration-300 focus:scale-[1.02] focus:shadow-lg border-gray-200 focus:border-blue-500"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                              >
+                                {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirm Password</Label>
+                            <div className="relative">
+                              <Input
+                                id="confirmPassword"
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="••••••••"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="pr-12 transition-all duration-300 focus:scale-[1.02] focus:shadow-lg border-gray-200 focus:border-blue-500"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                              >
+                                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <Button 
+                          onClick={handleForgotPasswordOTPVerify}
+                          className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 transition-all duration-500 hover:scale-105 group shadow-lg"
+                          disabled={forgotPasswordOTP.length !== 6 || !newPassword || !confirmPassword || newPassword !== confirmPassword}
+                        >
+                          Reset Password
+                          <Check className="ml-2 w-4 h-4 group-hover:scale-110 transition-transform" />
+                        </Button>
+                      </>
+                    )}
+
+                    <Button 
+                      variant="ghost" 
+                      onClick={resetToSignIn}
+                      className="w-full"
+                    >
+                      Back to Sign In
+                    </Button>
+                  </div>
                 ) : (
                   <div className="space-y-6 animate-fade-in">
                     <div className="text-center">
@@ -283,7 +455,7 @@ const SignIn = () => {
                   </div>
                 )}
 
-                {!showMFA && (
+                {!showMFA && !showForgotPassword && (
                   <>
                     <div className="relative">
                       <div className="absolute inset-0 flex items-center">
@@ -295,7 +467,7 @@ const SignIn = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                      <Button onClick={handleGoogleSignIn} variant="outline" className="hover:scale-105 transition-all duration-300 hover:shadow-md">
+                      <Button variant="outline" className="hover:scale-105 transition-all duration-300 hover:shadow-md">
                         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
                           <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                           <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -313,7 +485,7 @@ const SignIn = () => {
                     {/* GitHub/LinkedIn for students and professors */}
                     {(userType === "student" || userType === "professor") && (
                       <div className="grid grid-cols-2 gap-3">
-                        <Button onClick={handleGithubSignIn} variant="outline" className="hover:scale-105 transition-all duration-300 hover:shadow-md">
+                        <Button variant="outline" className="hover:scale-105 transition-all duration-300 hover:shadow-md">
                           <Github className="w-4 h-4 mr-2" />
                           GitHub
                         </Button>
@@ -339,7 +511,7 @@ const SignIn = () => {
           {/* Right side - Header and Benefits */}
           <div className="space-y-8 animate-fade-in">
             {/* Header */}
-            <div className="text-center animate-fade-in">
+            <div className="bg-white rounded-2xl p-8 shadow-xl animate-fade-in">
               <div className="w-30 flex items-left space-x-2 mb-8">
                 <Link to="/" className="flex items-center space-x-2 group">
                   <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-lg group-hover:scale-110 transition-all duration-300 shadow-md">
@@ -354,24 +526,26 @@ const SignIn = () => {
                   <Badge variant="secondary" className="hidden w-10 h-6 text-sm px-1 sm:inline-flex animate-pulse bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">Beta</Badge>
                 </Link>
               </div>
-              <h1 className="text-5xl font-bold text-gray-900 mb-4 leading-tight">
-                Welcome Back to
-                <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Innovation
-                </span>
-              </h1>
-              <p className="text-xl text-gray-600 leading-relaxed mb-4">
-                Continue your journey of building the future with cutting-edge projects and collaborations.
-              </p>
-              <div className="flex items-center justify-center space-x-2">
-                <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 hover:scale-105 transition-transform">
-                  <Star className="w-3 h-3 mr-1" />
-                  Welcome back
-                </Badge>
-                <Badge variant="outline" className="bg-white border-green-500 text-green-700 hover:scale-105 transition-transform">
-                  <Shield className="w-3 h-3 mr-1" />
-                  Secure login
-                </Badge>
+              <div className="text-center">
+                <h1 className="text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                  Welcome Back to
+                  <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Innovation
+                  </span>
+                </h1>
+                <p className="text-xl text-gray-600 leading-relaxed mb-4">
+                  Continue your journey of building the future with cutting-edge projects and collaborations.
+                </p>
+                <div className="flex items-center justify-center space-x-2">
+                  <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 hover:scale-105 transition-transform">
+                    <Star className="w-3 h-3 mr-1" />
+                    Welcome back
+                  </Badge>
+                  <Badge variant="outline" className="border-green-500 text-green-700 hover:scale-105 transition-transform">
+                    <Shield className="w-3 h-3 mr-1" />
+                    Secure login
+                  </Badge>
+                </div>
               </div>
             </div>
 

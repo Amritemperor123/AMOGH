@@ -18,6 +18,7 @@ import RecentProjects from "@/components/RecentProjects";
 import QuickActions from "@/components/QuickActions";
 import RecentActivity from "@/components/RecentActivity";
 import SkillsSection from '@/components/Skillssection';
+import { EditProfile } from "@/components/EditProfile";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -87,12 +88,22 @@ const Profile = () => {
   const fullName =
     `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || "Unnamed User";
 
-  // const [profileData, setProfileData] = useState({
-  //   name: 'Alex Rivera',
-  //   title: 'Digital Creator & Entrepreneur',
-  //   bio: 'Passionate about technology, design, and creating meaningful connections. Building the future one project at a time.',
-  //   avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
-  // });
+  // add state for profile data management
+  const [profileData, setProfileData] = useState({
+    name: fullName,
+    title: userData.title || "New Member",
+    bio: userData.bio || "This is a new profile. Update your bio!",
+    location: userData.location || "",
+    website: userData.website || "",
+    projects: userData.projects || []
+  });
+
+  const handleProfileSave = (updatedData: any) => {
+    setProfileData(updatedData);
+    // Here you would typically save to Firebase/database
+    console.log("Profile updated:", updatedData);
+  };
+
   const [socialLinks] = useState([{
     platform: 'instagram',
     username: '@alexrivera',
@@ -183,6 +194,16 @@ const Profile = () => {
               <h1 className="text-4xl font-bold mb-2 drop-shadow-lg flex items-center mb-1.5 ">{profile.name}</h1>
               <p className="text-xl text-slate-200 drop-shadow-md">{profile.title}</p>
             </div>
+
+            {/* Edit profile button */}
+            {isLoggedIn && (
+              <div className="mb-4">
+                <EditProfile
+                  profileData={profileData}
+                  onSave={handleProfileSave}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
