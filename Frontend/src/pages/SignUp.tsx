@@ -103,7 +103,7 @@ const SignUp = () => {
       const provider = new GoogleAuthProvider();
       const userCred = await signInWithPopup(auth, provider);
       console.log("Google sign-up successful:", userCred.user);
-      navigate("/profile");
+      navigate("/signin");
     } catch (err: any) {
       console.error("Google sign-up error:", err.message);
       alert("Google login failed: " + err.message);

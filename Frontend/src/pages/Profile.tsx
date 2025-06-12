@@ -19,7 +19,6 @@ import RecentProjects from "@/components/RecentProjects";
 import QuickActions from "@/components/QuickActions";
 import RecentActivity from "@/components/RecentActivity";
 import SkillsSection from '@/components/Skillssection';
-import { useState } from "react";
 
 const Profile = () => {
   const navigate = useNavigate();
