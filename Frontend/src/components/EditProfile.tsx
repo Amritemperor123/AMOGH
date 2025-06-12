@@ -23,6 +23,7 @@ interface ProfileData {
   name: string;
   title: string;
   bio: string;
+  avatar: string; //store image as URL
   location: string;
   website: string;
   projects: Project[];
