@@ -41,7 +41,7 @@ const BackgroundUpload = ({ onBackgroundChange }: BackgroundUploadProps) => {
       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
         <div className="flex items-center gap-2 mb-3">
           <Camera className="w-5 h-5 text-slate-600" />
-          <span className="text-sm font-medium text-slate-700">Change Background</span>
+          <span className="text-xs font-medium text-slate-700">Change Background</span>
         </div>
         
         {/* Upload Button */}
