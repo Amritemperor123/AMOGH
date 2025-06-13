@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import { Camera, Upload, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { EditProfile } from './EditProfile';
+import { Link } from 'react-router-dom';  
 
 interface BackgroundUploadProps {
   onBackgroundChange: (imageUrl: string) => void;
@@ -125,10 +125,11 @@ const BackgroundUpload = ({ onBackgroundChange }: BackgroundUploadProps) => {
         </div>
 
         <div className="mt-5 ml-2.5">
-          <EditProfile
-            profileData={profileData}
-            onSave={handleProfileSave}
-          />
+          <Link to="/editProfile">
+            <Button variant="secondary" size="default" className="bg-white shadow-md rounded-lg hover:bg-slate-100 px-8">
+              Edit Profile
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

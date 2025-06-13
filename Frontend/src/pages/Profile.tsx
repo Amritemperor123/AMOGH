@@ -8,32 +8,32 @@ import QuickActions from "@/components/QuickActions";
 import RecentActivity from "@/components/RecentActivity";
 import SkillsSection from '@/components/Skillssection';
 import { useState } from "react";
+import { useProfileStore } from "@/hooks/useProfileStore";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 
-// Following imports corresponds to firebase auth functions
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { auth, db } from "../lib/firebase";
-// import { doc, getDoc } from "firebase/firestore";
-// import { onAuthStateChanged } from "firebase/auth";
-
-
 const Profile = () => {
+  const { profile } = useProfileStore();
   const [backgroundImage, setBackgroundImage] = useState('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80');
   const [userData] = useState<any>({});
   const [isLoggedIn] = useState(false);
+
+  // Use profile data from store if available, otherwise use default data
   const [profileData] = useState({
-    name: 'Alex Rivera',
-    title: 'Digital Creator & Entrepreneur',
-    bio: 'Passionate about technology, design, and creating meaningful connections. Building the future one project at a time.',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
-    location: 'London',
-    website: 'https://github.com',
-    projects: []
+    name: profile?.name || 'Alex Rivera',
+    title: profile?.userType === 'student' ? 'Student' : 
+           profile?.userType === 'professor' ? 'Professor' : 
+           profile?.userType === 'enterprise' ? 'Enterprise' : 'Digital Creator & Entrepreneur',
+    bio: profile?.bio || 'Passionate about technology, design, and creating meaningful connections. Building the future one project at a time.',
+    avatar: profile?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
+    location: profile?.userType === 'student' ? (profile as any)?.location : 
+              profile?.userType === 'enterprise' ? (profile as any)?.location : 'London',
+    website: profile?.userType === 'student' ? (profile as any)?.website : 'https://github.com',
+    projects: profile?.userType === 'student' ? (profile as any)?.projects || [] : []
   });
 
   const [socialLinks] = useState([{
@@ -68,7 +68,7 @@ const Profile = () => {
     icon: Mail
   }]);
 
-  const profile = isLoggedIn
+  const profileStats = isLoggedIn
     ? {
         name: profileData.name,
         title: profileData.title,
@@ -82,14 +82,16 @@ const Profile = () => {
         },
       }
     : {
-        name: "Guest",
-        title: "Digital Creator & Entrepreneur",
-        bio: "Passionate about technology, design, and creating meaningful connections. Building the future one project at a time.",
-        avatar: "",
+        name: profileData.name,
+        title: profileData.title,
+        bio: profileData.bio,
+        avatar: profileData.avatar,
         stats: {
           followers: 12,
           following: 850,
-          projects: 45,
+          projects: profile?.userType === 'student' ? (profile as any)?.projects?.length || 45 : 
+                   profile?.userType === 'professor' ? (profile as any)?.papers?.length || 25 :
+                   profile?.userType === 'enterprise' ? (profile as any)?.products?.length || 12 : 45,
           likes: 2.5,
         },
       };
@@ -97,104 +99,6 @@ const Profile = () => {
   const handleBackgroundChange = (newImageUrl: string) => {
     setBackgroundImage(newImageUrl);
   };
-
-// the methods and functions written above are for frontend purposes.
-// for backend, the whole part is written below.
-// keep what you want for your own benifits.
-
-// const navigate = useNavigate();
-//   const [user, setUser] = useState(auth.currentUser);
-//   const [userData, setUserData] = useState<any>({});
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const [loading, setLoading] = useState(true);
-//   const [backgroundImage, setBackgroundImage] = useState(
-//     "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80"
-//   );
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-//       setUser(currentUser);
-//       if (!currentUser) {
-//         setUserData({});
-//         localStorage.removeItem("isLoggedIn");
-//         setIsLoggedIn(false);
-//         setLoading(false);
-//       } else {
-//         localStorage.setItem("isLoggedIn", "true");
-//         setIsLoggedIn(true);
-//       }
-//     });
-
-//     return unsubscribe;
-//   }, []);
-
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       if (user) {
-//         try {
-//           const userRef = doc(db, "users", user.uid);
-//           const docSnap = await getDoc(userRef);
-//           if (docSnap.exists()) {
-//             setUserData(docSnap.data());
-//           } else {
-//             console.log("No user data found");
-//             setUserData({});
-//           }
-//         } catch (err) {
-//           console.error("Error fetching user data", err);
-//           setUserData({});
-//         }
-//       }
-//       setLoading(false);
-//     };
-
-//     if (user) {
-//       fetchUserData();
-//     }
-//   }, [user]);
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center bg-slate-100">
-//         <div className="text-xl font-semibold text-slate-700 animate-pulse">
-//           Loading your profile...
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   const fullName =
-//     `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || "Unnamed User";
-
-//   const profile = isLoggedIn
-//     ? {
-//         name: fullName,
-//         title: userData.title || "New Member",
-//         bio: userData.bio || "This is a new profile. Update your bio!",
-//         avatar: userData.avatar || "",
-//         stats: {
-//           followers: 0,
-//           following: 0,
-//           projects: 0,
-//           likes: 0,
-//         },
-//       }
-//     : {
-//         name: "Guest",
-//         title: "Digital Creator & Entrepreneur",
-//         bio: "Passionate about technology, design, and creating meaningful connections. Building the future one project at a time.",
-//         avatar: "",
-//         stats: {
-//           followers: 12,
-//           following: 850,
-//           projects: 45,
-//           likes: 2.5,
-//         },
-//       };
-
-//   const handleBackgroundChange = (newImageUrl: string) => {
-//     setBackgroundImage(newImageUrl);
-//   };
 
   return <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Hero Section with Background */}
@@ -223,6 +127,15 @@ const Profile = () => {
               <div className="flex-1 text-white">
                 <h1 className="text-4xl font-bold mb-2 drop-shadow-lg flex items-center mb-1.5 ">{profileData.name}</h1>
                 <p className="text-xl text-slate-200 drop-shadow-md">{profileData.title}</p>
+                {profile && (
+                  <div className="mt-4">
+                    <Link to="/EditProfile">
+                      <Button variant="secondary" size="sm">
+                        Edit Profile
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>              
             </div>
           </div>
@@ -234,19 +147,23 @@ const Profile = () => {
         <Card className="p-4 shadow-lg border-0 backdrop-blur-sm transition-all duration-300 hover:shadow-xl bg-blue-50">
           <div className="grid grid-cols-4 gap-4">
             <div className="text-center group cursor-pointer">
-              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profile.stats.followers}K</div>
+              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profileStats.stats.followers}K</div>
               <div className="text-sm text-slate-600">Followers</div>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profile.stats.following}</div>
+              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profileStats.stats.following}</div>
               <div className="text-sm text-slate-600">Following</div>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profile.stats.projects}</div>
-              <div className="text-sm text-slate-600">Projects</div>
+              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profileStats.stats.projects}</div>
+              <div className="text-sm text-slate-600">
+                {profile?.userType === 'student' ? 'Projects' : 
+                 profile?.userType === 'professor' ? 'Papers' : 
+                 profile?.userType === 'enterprise' ? 'Products' : 'Projects'}
+              </div>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profile.stats.likes}K</div>
+              <div className="text-2xl font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors">{profileStats.stats.likes}K</div>
               <div className="text-sm text-slate-600">Likes</div>
             </div>
           </div>
