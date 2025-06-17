@@ -68,6 +68,9 @@ export const Header = () => {
           <Link to="/" className="text-slate-600 hover:text-cyan-500 transition-colors font-medium hover:scale-105 transform duration-200">
             Connect
           </Link>
+          <Link to="/aboutus" className="text-slate-600 hover:text-cyan-500 transition-colors font-medium hover:scale-105 transform duration-200">
+            About Us
+          </Link>
         </nav>
 
         {/* Right-aligned Buttons */}
@@ -141,6 +144,13 @@ export const Header = () => {
                 onClick={closeMobileMenu}
               >
                 <span className="ml-3">Connect</span>
+              </Link>
+              <Link
+                to="/aboutus"
+                className="flex items-center px-4 py-3 text-slate-700 hover:text-cyan-500 hover:bg-cyan-50 rounded-lg transition-all duration-200 font-medium touch-manipulation"
+                onClick={closeMobileMenu}
+              >
+                <span className="ml-3">About Us</span>
               </Link>
             </div>
 
