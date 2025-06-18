@@ -21,7 +21,8 @@ import ProductDisplay from "./pages/ProductDisplay";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import About from "./pages/AboutUs";
 import Dashboard from "./pages/Dashboard";
-import { ThemeProvider } from "next-themes";
+import FindExpert from "./pages/FindExpert";
+import BecomeMentor from "./pages/BecomeMentor";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,8 @@ const App = () => (
           <Route path="/paymentSuccess" element={<PaymentSuccess />} />
           <Route path="/aboutus" element={<About />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/find-expert" element={<FindExpert />} />
+          <Route path="/become-mentor" element={<BecomeMentor />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

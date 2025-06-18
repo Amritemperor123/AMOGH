@@ -94,7 +94,7 @@ export const RelatedProducts = () => {
   };
 
   return (
-    <div className="bg-white px-6 py-8 rounded-lg shadow-md">
+    <div>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold text-gray-900">Related Products</h2>
       </div>

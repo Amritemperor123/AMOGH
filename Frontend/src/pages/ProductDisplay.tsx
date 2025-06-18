@@ -216,7 +216,7 @@ const ProductDisplay = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 bg-gray-100">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="features">Features</TabsTrigger>
                 <TabsTrigger value="tech">Tech Stack</TabsTrigger>
@@ -340,7 +340,7 @@ const ProductDisplay = () => {
             </Card>
 
             {/* Trust Indicators */}
-            <Card className="bg-orange-300 border-gray-400">
+            <Card className="bg-orange-300">
               <CardHeader>
                 <CardTitle className="text-black">Trust & Safety</CardTitle>
               </CardHeader>
