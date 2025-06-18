@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
 
 const ProductDisplay = () => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -37,6 +38,7 @@ const ProductDisplay = () => {
     category: "AI & Sustainability",
     price: "$2,500",
     originalPrice: "$3,200",
+    discount: "22%",
     duration: "2 months",
     rating: 4.9,
     reviews: 127,
@@ -88,6 +90,7 @@ const ProductDisplay = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-100">
+      <Header />
       {/* Hero Section */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-8">
@@ -180,6 +183,7 @@ const ProductDisplay = () => {
                   <div>
                     <span className="text-3xl font-bold text-gray-900">{project.price}</span>
                     <span className="text-lg text-gray-500 line-through ml-2">{project.originalPrice}</span>
+                    <span className="text-lg text-gray-500 ml-2">{project.discount} off</span>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center space-x-1 text-gray-600">
@@ -196,14 +200,6 @@ const ProductDisplay = () => {
                   <Button className="flex-1 items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600">
                     <ShoppingCart className="w-5 h-5" />
                     Add to Cart
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="icon"
-                    onClick={() => setIsLiked(!isLiked)}
-                    className={isLiked ? "text-red-500 border-red-500" : ""}
-                  >
-                    <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
                   </Button>
                   <Button variant="outline" size="icon">
                     <Share2 className="w-4 h-4" />
@@ -344,22 +340,22 @@ const ProductDisplay = () => {
             </Card>
 
             {/* Trust Indicators */}
-            <Card className="border-gray-200 bg-white">
+            <Card className="bg-orange-300 border-gray-400">
               <CardHeader>
-                <CardTitle className="text-gray-900">Trust & Safety</CardTitle>
+                <CardTitle className="text-black">Trust & Safety</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-green-500" />
-                  <span className="text-sm text-gray-700">Money-back guarantee</span>
+                  <Shield className="w-5 h-5 text-black" />
+                  <span className="text-sm text-black">Money-back guarantee</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Award className="w-5 h-5 text-blue-500" />
-                  <span className="text-sm text-gray-700">Verified creator</span>
+                  <Award className="w-5 h-5 text-black" />
+                  <span className="text-sm text-black">Verified creator</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-purple-500" />
-                  <span className="text-sm text-gray-700">24/7 support</span>
+                  <Users className="w-5 h-5 text-black" />
+                  <span className="text-sm text-black">24/7 support</span>
                 </div>
               </CardContent>
             </Card>
