@@ -91,6 +91,7 @@ const Dashboard = () => {
           { title: "Completed", value: "12", change: "Increased from last month" },
           { title: "In Progress", value: "4", change: "Increased from last month" },
           { title: "Sold", value: "2", change: "On Discuss", status: true },
+          { title: "Earning", value: "2500$", change: "Ongoing", status: true },
         ];
       case 'professor':
         return [
@@ -98,6 +99,7 @@ const Dashboard = () => {
           { title: "Active Students", value: "156", change: "Increased from last month" },
           { title: "Projects Reviews", value: "24", change: "Increased from last month" },
           { title: "Pending Reviews", value: "12", change: "On Discuss", status: true },
+          { title: "Earning", value: "2500$", change: "Ongoing", status: true },
         ];
       case 'enterprise':
         return [
@@ -105,6 +107,7 @@ const Dashboard = () => {
           { title: "Past Deals", value: "10", change: "Increased from last month" },
           { title: "Ongoing deals", value: "12", change: "Increased from last month" },
           { title: "Inventory", value: "2", change: "Projects", status: true },
+          { title: "Earning", value: "2500$", change: "Ongoing", status: true },
         ];
       default:
         return [];
@@ -345,7 +348,7 @@ const Dashboard = () => {
               </div>
 
               {/* Stats cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {stats.map((stat, index) => (
                   <StatsCard
                     key={index}

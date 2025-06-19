@@ -65,7 +65,7 @@ export const Header = () => {
           <Link to="/sustainable" className="text-slate-600 hover:text-emerald-500 transition-colors font-medium hover:scale-105 transform duration-200">
             Green
           </Link>
-          <Link to="/" className="text-slate-600 hover:text-cyan-500 transition-colors font-medium hover:scale-105 transform duration-200">
+          <Link to="/find-expert" className="text-slate-600 hover:text-cyan-500 transition-colors font-medium hover:scale-105 transform duration-200">
             Connect
           </Link>
           <Link to="/aboutus" className="text-slate-600 hover:text-cyan-500 transition-colors font-medium hover:scale-105 transform duration-200">
@@ -139,7 +139,7 @@ export const Header = () => {
                 <span className="ml-3">Green</span>
               </Link>
               <Link
-                to="/"
+                to="/find-expert"
                 className="flex items-center px-4 py-3 text-slate-700 hover:text-cyan-500 hover:bg-cyan-50 rounded-lg transition-all duration-200 font-medium touch-manipulation"
                 onClick={closeMobileMenu}
               >
