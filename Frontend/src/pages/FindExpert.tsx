@@ -23,8 +23,6 @@ type Freelancer = {
   university: string;
   researchFocus: string;
   publications: number;
-  cardColor: string;
-  textColor: string;
 };
 
 // Sample PhD freelancer data
@@ -46,8 +44,6 @@ const freelancers: Freelancer[] = [
     university: "Harvard University",
     researchFocus: "Genetic Engineering",
     publications: 42,
-    cardColor: "bg-gradient-to-br from-orange-500 to-amber-500",
-    textColor: "text-white"
   },
   {
     id: 2,
@@ -66,8 +62,6 @@ const freelancers: Freelancer[] = [
     university: "Stanford University",
     researchFocus: "AI Ethics",
     publications: 28,
-    cardColor: "bg-gradient-to-br from-blue-500 to-cyan-500",
-    textColor: "text-white"
   },
   {
     id: 3,
@@ -86,8 +80,6 @@ const freelancers: Freelancer[] = [
     university: "ETH Zurich",
     researchFocus: "Quantum Algorithms",
     publications: 36,
-    cardColor: "bg-gradient-to-br from-emerald-500 to-teal-500",
-    textColor: "text-white"
   },
   {
     id: 4,
@@ -106,8 +98,6 @@ const freelancers: Freelancer[] = [
     university: "Seoul National University",
     researchFocus: "Cognitive Development",
     publications: 31,
-    cardColor: "bg-gradient-to-br from-purple-500 to-indigo-500",
-    textColor: "text-white"
   },
   {
     id: 5,
@@ -126,8 +116,6 @@ const freelancers: Freelancer[] = [
     university: "University of British Columbia",
     researchFocus: "Climate Change",
     publications: 25,
-    cardColor: "bg-gradient-to-br from-rose-500 to-pink-500",
-    textColor: "text-white"
   },
   {
     id: 6,
@@ -146,8 +134,6 @@ const freelancers: Freelancer[] = [
     university: "Technical University of Munich",
     researchFocus: "Nanomaterials",
     publications: 48,
-    cardColor: "bg-gradient-to-br from-cyan-500 to-sky-500",
-    textColor: "text-white"
   },
   {
     id: 7,
@@ -166,8 +152,6 @@ const freelancers: Freelancer[] = [
     university: "Indian Institute of Science",
     researchFocus: "Cancer Genomics",
     publications: 22,
-    cardColor: "bg-gradient-to-br from-violet-500 to-purple-500",
-    textColor: "text-white"
   },
   {
     id: 8,
@@ -186,8 +170,6 @@ const freelancers: Freelancer[] = [
     university: "London School of Economics",
     researchFocus: "Behavioral Economics",
     publications: 19,
-    cardColor: "bg-gradient-to-br from-amber-500 to-yellow-500",
-    textColor: "text-white"
   },
    {
     id: 8,
@@ -206,8 +188,6 @@ const freelancers: Freelancer[] = [
     university: "London School of Economics",
     researchFocus: "Behavioral Economics",
     publications: 19,
-    cardColor: "bg-gradient-to-br from-amber-500 to-yellow-500",
-    textColor: "text-white"
   }
 ];
 
@@ -511,7 +491,7 @@ const FindExpert = () => {
           key={expert.id}
           variants={itemVariants}
           whileHover={{ y: -5 }}
-          className={`${expert.cardColor} rounded-xl overflow-hidden shadow-lg transition-all flex flex-col h-full`}
+          className={`rounded-xl overflow-hidden shadow-lg transition-all flex flex-col h-full bg-gradient-to-br from-blue-50 to-purple-50`}
         >
           {/* Parent wrapper for all card content */}
           <div className="flex flex-col h-full">
@@ -524,9 +504,9 @@ const FindExpert = () => {
                 />
               </div>
               <div className="text-center mb-3">
-                <h3 className={`text-lg font-bold ${expert.textColor}`}>{expert.name}</h3>
-                <p className={`${expert.textColor} font-medium text-sm`}>{expert.title}</p>
-                <p className={`${expert.textColor}/90 text-xs mt-1`}>{expert.university}</p>
+                <h3 className={`text-lg font-bold text-black`}>{expert.name}</h3>
+                <p className={`text-black font-medium text-sm`}>{expert.title}</p>
+                <p className={`text-black text-xs mt-1`}>{expert.university}</p>
               </div>
               <div className="flex justify-center mb-3">
                 <div className="flex text-amber-200">
@@ -546,13 +526,13 @@ const FindExpert = () => {
                     </svg>
                   ))}
                 </div>
-                <span className={`ml-1 ${expert.textColor}/90 text-xs`}>
+                <span className={`ml-1 text-black text-xs`}>
                   {expert.rating} ({expert.completedProjects})
                 </span>
               </div>
               <div className="mb-3 text-center">
-                <h4 className={`text-xs font-semibold ${expert.textColor}/90 mb-1`}>Research Focus</h4>
-                <p className={`${expert.textColor} text-sm`}>{expert.researchFocus}</p>
+                <h4 className={`text-xs font-semibold text-black mb-1`}>Research Focus</h4>
+                <p className={`text-black text-sm`}>{expert.researchFocus}</p>
               </div>
               <div className="mt-auto pt-3 flex justify-between items-center border-t border-white/30">
                 <div className="flex items-center text-white/80 text-xs">
@@ -738,7 +718,7 @@ const FindExpert = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div 
-                className={`p-8 ${selectedExpert.cardColor} bg-opacity-90`}
+                className={`p-8 bg-gradient-to-br from-blue-50 to-purplr-50 bg-opacity-90`}
               >
                 <div className="flex justify-between items-start">
                   <div className="flex items-start">
